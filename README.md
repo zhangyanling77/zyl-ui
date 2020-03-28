@@ -1,23 +1,9 @@
 # 从零搭建基于`Vue`组件库 zyl-ui
 
-## 一.组件库的划分
-
-我们的划分以`elementUi`为基准分为 
-
-- `Basic`:`Button`、`Icon图标`、`Layout布局`、`container布局容器`...
-
-- `Form`: `Input`、`Radio`、`checkbox`、`DatePicker`、`Upload`...
-- `Data`:`Table`、`Tree`、`Pagination`...
-
-- `Notice`:`Alert`、`Loading`、`Message`...
-- `Navigation`: `Tabs`、`Dropdown`、`NavMenu`...
-
-- `Others`:`Popover`,`Dialog`、`inifiniteScroll`、`Carousel`...
-
-## 二.通过`Vue-Cli`初始化项目
+## 一.通过`Vue-Cli`初始化项目
 
 ```bash
-vue create zh-ui
+vue create zyl-ui
 ```
 
 ```bash
@@ -70,7 +56,8 @@ vue create zh-ui
 │  │      index.js # 所有组件的入口
 │  │       
 │  └─styles # 公共样式
-│          _var.scss      
+│          _var.scss  
+|          icon.js # iconfont js文件
 └─tests # 单元测试
     └─unit
             button.spec.js
@@ -96,8 +83,8 @@ export default {
 ```
 
 ```js
-import zhuUi from  './packages';
-Vue.use(zhuUi)
+import zylUI from  './packages';
+Vue.use(zylUI)
 ```
 
 > 我们可以通过插件的方式去引入我们的组件库
@@ -147,7 +134,7 @@ $info-active: #82848a;
 
 ```vue
 <template>
-  <button class="zh-button" :class="btnClass">
+  <button class="zyl-button" :class="btnClass">
     <slot></slot>  
   </button>
 </template>
@@ -174,12 +161,12 @@ export default {
     btnClass() { // 动态添加按钮样式
       let classes = [];
       if (this.type) {
-        classes.push(`zh-button-${this.type}`);
+        classes.push(`zyl-button-${this.type}`);
       }
       return classes;
     }
   },
-  name: "zh-button"
+  name: "zyl-button"
 };
 </script>
 <style lang="scss">
@@ -190,7 +177,7 @@ $color: #606266;
 $border-color: #dcdfe6;
 $background: #ecf5ff;
 $active-color: #3a8ee6;
-.zh-button {
+.zyl-button {
   border-radius: $border-radius;
   border: 1px solid $border-color;
   color: $color;
@@ -248,7 +235,7 @@ $active-color: #3a8ee6;
 
 ```vue
 <template>
-  <svg class="zh-icon" aria-hidden="true">
+  <svg class="zyl-icon" aria-hidden="true">
     <use :xlink:href="`#icon-${icon}`" />
   </svg>
 </template>
@@ -258,11 +245,11 @@ export default {
   props: {
     icon: String
   },
-  name: "zh-icon"
+  name: "zyl-icon"
 };
 </script>
 <style lang="scss">
-.zh-icon {
+.zyl-icon {
   width: 24px;
   height: 24px;
   vertical-align: middle;
@@ -271,12 +258,12 @@ export default {
 ```
 
 ```vue
-<button class="zh-button" :class="btnClass">
-    <zh-icon 
+<button class="zyl-button" :class="btnClass">
+    <zyl-icon 
         :icon="icon"
         v-if="icon"
         class="icon"
-    ></zh-icon>
+    ></zyl-icon>
     <span v-if="this.$slots.default">
         <slot></slot>
     </span>
@@ -301,9 +288,9 @@ span + .icon {
 
 ```vue
 <template>
-  <button class="zh-button" :class="btnClass" :disabled="loading">
-    <zh-icon :icon="icon" v-if="icon && !loading" class="icon"></zh-icon>
-    <zh-icon icon="loading" v-if="loading" class="icon loading"></zh-icon>
+  <button class="zyl-button" :class="btnClass" :disabled="loading">
+    <zyl-icon :icon="icon" v-if="icon && !loading" class="icon"></zyl-icon>
+    <zyl-icon icon="loading" v-if="loading" class="icon loading"></zyl-icon>
     <span v-if="this.$slots.default">
       <slot></slot>
     </span>
@@ -330,14 +317,14 @@ span + .icon {
 
 ```vue
 <template>
-    <div class="zh-button-group">
+    <div class="zyl-button-group">
         <slot></slot>
     </div>
 </template>
 
 <script>
 export default {
-    name:'zh-button-group',
+    name:'zyl-button-group',
     mounted () {
     let children = this.$el.children
     for (let i = 0; i < children.length; i++) {
@@ -348,7 +335,7 @@ export default {
 </script>
 <style lang="scss">
 @import "../styles/_var.scss";
-.zh-button-group {
+.zyl-button-group {
   display: inline-flex;
   vertical-align: middle;
   button {
@@ -434,15 +421,15 @@ describe('button.vue', () => {
     it('1.测试slot是否能正常显示', () => {
         const wrapper = shallowMount(Button, {
             slots: {
-                default: 'zhu-ui'
+                default: 'zyl-ui'
             }
         })
-        expect(wrapper.text()).to.equal('zhu-ui')
+        expect(wrapper.text()).to.equal('zyl-ui')
     })
     it('2.测试传入icon属性', () => {
         const wrapper = shallowMount(Button, {
             stubs: {
-                'zh-icon': Icon
+                'zyl-icon': Icon
             },
             propsData: {
                 icon: 'edit' // 传入的是edit 测试一下 edit是否ok
@@ -453,7 +440,7 @@ describe('button.vue', () => {
     it('3.测试传入loading,是否能，控制loading属性', () => {
         const wrapper = shallowMount(Button, {
             stubs: {
-                'zh-icon': Icon
+                'zyl-icon': Icon
             },
             propsData: {
                 loading: true // 传入的是edit 测试一下 edit是否ok
@@ -464,7 +451,7 @@ describe('button.vue', () => {
     })
     it('4.测试点击按钮', () => {
         const wrapper = shallowMount(Button, {
-            stubs: ['zh-icon']
+            stubs: ['zyl-icon']
         })
         wrapper.find('button').trigger('click')
         expect(wrapper.emitted('click').length).to.eq(1);
@@ -473,7 +460,7 @@ describe('button.vue', () => {
     it('5.测试前后图标', () => {
         const wrapper = shallowMount(Button, {
             stubs: {
-                'zh-icon': Icon
+                'zyl-icon': Icon
             },
             slots:{
                 default:'hello'
@@ -501,13 +488,13 @@ describe('button.vue', () => {
 #### (1)配置打包命令
 
 ```bash
-"lib": "vue-cli-service build --target lib --name zhu-ui  ./src/packages/index.js"
+"lib": "vue-cli-service build --target lib --name zyl-ui  ./src/packages/index.js"
 ```
 
 #### (2)配置运行入口
 
 ```bash
-"main": "./dist/zhu-ui.umd.min.js"
+"main": "./dist/zyl-ui.umd.min.js"
 ```
 
 #### (3)link到全局下
@@ -556,7 +543,7 @@ features:
 
 ```js
 module.exports = {
-    title: 'zhu-ui', // 设置网站标题
+    title: 'zyl-ui', // 设置网站标题
     description: 'ui 库', //描述
     dest: './build', // 设置输出目录
     port: 1234, //端口
@@ -593,7 +580,7 @@ module.exports = {
 - link组件库
 
   ```bash
-  npm link zhu-ui
+  npm link zyl-ui
   ```
 
 ```js
@@ -604,8 +591,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/googlecode.css' //样式文件
 
-import zhuUi from 'zhu-ui' // 要编写对应的文档的包
-import 'zhu-ui/dist/zhu-ui.css'
+import zylUI from 'zyl-ui' // 要编写对应的文档的包
+import 'zyl-ui/dist/zyl-ui.css'
 Vue.directive('highlight',function (el) {
   let blocks = el.querySelectorAll('pre code');
   blocks.forEach((block)=>{
@@ -619,7 +606,7 @@ export default ({
   siteData
 }) => {
   Vue.use(Element);
-  Vue.use(zhuUi)
+  Vue.use(zylUI)
 }
 ```
 
@@ -940,12 +927,12 @@ $badgeErrorColor = #DA5961
 ::: slot highlight
 ​```html
 <div>
-    <zh-button>默认按钮</zh-button>
-    <zh-button type="primary">主要按钮</zh-button>
-    <zh-button type="success">成功按钮</zh-button>
-    <zh-button type="info">信息按钮</zh-button>
-    <zh-button type="warning">警告按钮</zh-button>
-    <zh-button type="danger">危险按钮</zh-button>
+    <zyl-button>默认按钮</zh-button>
+    <zyl-button type="primary">主要按钮</zyl-button>
+    <zyl-button type="success">成功按钮</zyl-button>
+    <zyl-button type="info">信息按钮</zyl-button>
+    <zyl-button type="warning">警告按钮</zyl-button>
+    <zyl-button type="danger">危险按钮</zyl-button>
 </div>
 ​```
 :::
