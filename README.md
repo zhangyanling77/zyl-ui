@@ -73,7 +73,7 @@ const install = (Vue) =>{ // 对外暴露install方法
     Vue.component(Button.name,Button);
     Vue.component(Icon.name,Icon);
 }
-
+// 针对script方式引入的情况
 if(typeof window.Vue !== 'undefined'){
     install(Vue);
 }
@@ -290,7 +290,7 @@ span + .icon {
 <template>
   <button class="zyl-button" :class="btnClass" :disabled="loading">
     <zyl-icon :icon="icon" v-if="icon && !loading" class="icon"></zyl-icon>
-    <zyl-icon icon="loading" v-if="loading" class="icon loading"></zyl-icon>
+    <zyl-icon icon="sync" v-if="loading" class="icon loading"></zyl-icon>
     <span v-if="this.$slots.default">
       <slot></slot>
     </span>
@@ -446,7 +446,7 @@ describe('button.vue', () => {
                 loading: true // 传入的是edit 测试一下 edit是否ok
             }
         })
-        expect(wrapper.find('use').attributes('href')).to.eq('#icon-loading');
+        expect(wrapper.find('use').attributes('href')).to.eq('#icon-sync');
         expect(wrapper.find('button').attributes('disabled')).to.eq('disabled');
     })
     it('4.测试点击按钮', () => {
@@ -944,8 +944,9 @@ $badgeErrorColor = #DA5961
 配置`.npmignore`配置文件
 
 ```
-npm addUser
-npm publish
+npm addUser // 如果没有用户名就注册一个
+npm login // 登录，输入密码
+npm publish // 发布
 ```
 
 ## 十.推送到git
