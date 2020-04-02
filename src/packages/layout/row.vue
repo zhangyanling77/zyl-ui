@@ -11,6 +11,15 @@ export default {
     gutter: {
       type: Number,
       default: 0
+    },
+    justify: {
+      type: String,
+      validator(type) {
+        if(type && !['start','end','center','space-around','space-between'].includes(type)){
+          console.error('类型必须是:'+['start','end','center','space-around','space-between'].join('、'))
+        }
+        return true
+      }
     }
   },
   mounted() {
@@ -28,6 +37,13 @@ export default {
           marginRight: -this.gutter / 2 + 'px'
         }
       }
+      if(this.justify){
+        let key = ['start','end'].includes(this.justify)?'flex-'+this.justify : this.justify
+        style = {
+          ...style,
+          justifyContent: key
+        }
+      }
       return style
     }
   }
@@ -37,5 +53,7 @@ export default {
 <style lang="scss">
 .zyl-row {
   display: flex;
+  overflow: hidden;
+  flex-wrap: wrap; // 换行
 }
 </style>
