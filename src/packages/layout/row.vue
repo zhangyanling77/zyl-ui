@@ -38,7 +38,7 @@ export default {
         }
       }
       if(this.justify){
-        let key = ['start','end'].includes(this.justify)?'flex-'+this.justify : this.justify
+        let key = ['start','end'].includes(this.justify) ? 'flex-' + this.justify : this.justify
         style = {
           ...style,
           justifyContent: key

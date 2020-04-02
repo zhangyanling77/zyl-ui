@@ -17,6 +17,26 @@ $success-active: #5daf34;
 $warning-active: #cf9236;
 $danger-active: #dd6161;
 $info-active: #82848a;
+
+$--sm: 768px !default;
+$--md: 992px !default;
+$--lg: 1200px !default;
+$--xl: 1920px !default;
+
+$map: (
+  "xs": ( max-width: $--sm - 1),
+  "sm": (min-width: $--sm ),
+  "md": (min-width: $--md),
+  "lg": ( min-width: $--lg),
+  "xl": ( min-width: $--xl)
+);
+
+@mixin res($key) {
+  @media only screen and #{inspect(map-get($map,$key))} {
+    @content; // 插槽
+  }
+}
+
 * {
   padding: 0;
   margin: 0;
