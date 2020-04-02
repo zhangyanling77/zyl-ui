@@ -44,16 +44,16 @@
     <div class="block">
       <!-- 布局组件 Row Col -->
       <zyl-row>
+        <zyl-col :span="24">
+          <div class="yellow">col-24</div>
+        </zyl-col>
+      </zyl-row>
+      <zyl-row>
         <zyl-col :span="12">
           <div class="red">col-12</div>
         </zyl-col>
         <zyl-col :span="12">
           <div class="green">col-12</div>
-        </zyl-col>
-      </zyl-row>
-      <zyl-row>
-        <zyl-col :span="24">
-          <div class="yellow">col-24</div>
         </zyl-col>
       </zyl-row>
       <zyl-row>
@@ -66,16 +66,16 @@
       </zyl-row>
       <zyl-row :gutter="16">
         <zyl-col :span="6">
-          <div class="red">col-12</div>
+          <div class="red">col-6</div>
         </zyl-col>
         <zyl-col :span="6">
-          <div class="green">col-12</div>
+          <div class="green">col-6</div>
         </zyl-col>
         <zyl-col :span="6">
-          <div class="red">col-12</div>
+          <div class="red">col-6</div>
         </zyl-col>
         <zyl-col :span="6">
-          <div class="green">col-12</div>
+          <div class="green">col-6</div>
         </zyl-col>
       </zyl-row>
     </div>
