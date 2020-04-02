@@ -4,9 +4,9 @@ import Col from '@/packages/layout/col.vue';
 import {expect} from 'chai'
 
 describe('row.vue',()=>{
-    it('1.测试gutter是否ok?',async ()=>{
+    it('1.测试gutter是否ok',async ()=>{
         let wrapper = shallowMount(Row,{
-            attachToDocument:true,
+            attachToDocument:true, // 测样式，需要挂载到dom上
             stubs:{
                 'zyl-col':Col
             },
@@ -19,7 +19,7 @@ describe('row.vue',()=>{
         });
         expect(getComputedStyle(wrapper.vm.$el).marginLeft).to.eq('-10px');
         expect(getComputedStyle(wrapper.vm.$el).marginRight).to.eq('-10px');
-
+      
         await wrapper.vm.$nextTick();
         let col = wrapper.vm.$el.querySelector('.zyl-col');
         expect(getComputedStyle(col).paddingLeft).to.eq('10px');
@@ -41,7 +41,7 @@ describe('row.vue',()=>{
         });
         expect(getComputedStyle(wrapper.vm.$el).justifyContent).to.eq('flex-start');
         wrapper.setProps({justify:'end'});
-        await wrapper.vm.$nextTick();
+        await wrapper.vm.$nextTick(); // 等待下一次渲染后再取值
         expect(getComputedStyle(wrapper.vm.$el).justifyContent).to.eq('flex-end');
         wrapper.setProps({justify:'center'});
         await wrapper.vm.$nextTick();
