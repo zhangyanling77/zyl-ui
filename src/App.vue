@@ -46,60 +46,64 @@
         <!-- 布局组件 Row Col -->
         <zyl-row>
           <zyl-col :span="24">
-            <div class="yellow">col-24</div>
+            <div class="grid-content bg-purple-dark">col-24</div>
           </zyl-col>
         </zyl-row>
+        <br />
         <zyl-row>
           <zyl-col :span="12">
-            <div class="red">col-12</div>
+            <div class="grid-content bg-purple-dark">col-12</div>
           </zyl-col>
           <zyl-col :span="12">
-            <div class="green">col-12</div>
+            <div class="grid-content bg-purple">col-12</div>
           </zyl-col>
         </zyl-row>
+        <br />
         <zyl-row>
           <zyl-col :span="6">
-            <div class="red">col-6</div>
+            <div class="grid-content bg-purple-dark">col-6</div>
           </zyl-col>
           <zyl-col :span="6" :offset="12">
-            <div class="green">col-6</div>
+            <div class="grid-content bg-purple">col-6</div>
           </zyl-col>
         </zyl-row>
+        <br />
         <zyl-row :gutter="16">
           <zyl-col :span="6">
-            <div class="red">col-6</div>
+            <div class="grid-content bg-purple-dark">col-6</div>
           </zyl-col>
           <zyl-col :span="6">
-            <div class="green">col-6</div>
+            <div class="grid-content bg-purple">col-6</div>
           </zyl-col>
           <zyl-col :span="6">
-            <div class="red">col-6</div>
+            <div class="grid-content bg-purple-dark">col-6</div>
           </zyl-col>
           <zyl-col :span="6">
-            <div class="green">col-6</div>
+            <div class="grid-content bg-purple">col-6</div>
           </zyl-col>
         </zyl-row>
+        <br />
         <zyl-row justify="center">
           <zyl-col :span="3">
-            <div class="red">ccc</div>
+            <div class="grid-content bg-purple-dark">ccc</div>
           </zyl-col>
           <zyl-col :span="3">
-            <div class="green">ddd</div>
+            <div class="grid-content bg-purple">ddd</div>
           </zyl-col>
         </zyl-row>
         <br />
         <zyl-row :gutter="10">
           <zyl-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-            <div class="grid-content red">aaa</div>
+            <div class="grid-content bg-purple-dark"></div>
           </zyl-col>
            <zyl-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content green">bbb</div>
+            <div class="grid-content bg-purple"></div>
           </zyl-col>
            <zyl-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-            <div class="grid-content red">ccc</div>
+            <div class="grid-content bg-purple-dark"></div>
           </zyl-col>
            <zyl-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
-            <div class="grid-content green">ddd</div>
+            <div class="grid-content bg-purple"></div>
           </zyl-col>
         </zyl-row>
       </div>
@@ -133,6 +137,16 @@ export default {
   }
   .yellow {
     background-color: darkorange;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
   }
 }
 </style>
