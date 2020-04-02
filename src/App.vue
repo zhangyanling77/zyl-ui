@@ -84,11 +84,11 @@
         </zyl-row>
         <br />
         <zyl-row justify="center">
-          <zyl-col :span="3">
-            <div class="grid-content bg-purple-dark">ccc</div>
+          <zyl-col :span="4">
+            <div class="grid-content bg-purple-dark">col-4</div>
           </zyl-col>
-          <zyl-col :span="3">
-            <div class="grid-content bg-purple">ddd</div>
+          <zyl-col :span="4">
+            <div class="grid-content bg-purple">col-4</div>
           </zyl-col>
         </zyl-row>
         <br />
