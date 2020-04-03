@@ -1,6 +1,8 @@
 <template>
   <aside class="zyl-aside" :style="{width}">
-    <slot></slot>
+    <slot>
+      
+    </slot>
   </aside>
 </template>
 

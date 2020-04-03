@@ -26,7 +26,7 @@ export default {
   flex-direction: row;
   flex:1
 }
-.zyl-container .isVertical {
+.zyl-container.isVertical {
   flex-direction: column;
 }
 </style>
