@@ -1,15 +1,17 @@
 <template>
-  <div>
-    aside
-  </div>
+  <aside class="zyl-aside" :style="{width}">
+    <slot></slot>
+  </aside>
 </template>
 
 <script>
 export default {
-  name: 'zyl-aside'
+  name:'zyl-aside',
+  props:{
+    width:{
+      type:String,
+      default:'300px'
+    }
+  }
 }
 </script>
-
-<style lang="scss">
-
-</style>
