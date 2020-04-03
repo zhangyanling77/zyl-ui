@@ -107,6 +107,7 @@
           </zyl-col>
         </zyl-row>
       </div>
+      <h1>Layout 布局组件</h1>
     </div>
   </div>
 </template>
@@ -128,15 +129,6 @@ export default {
   padding: 20px 0;
   >button, >svg{
     margin-right: 16px;
-  }
-  .red {
-    background-color: crimson;
-  }
-  .green {
-    background-color: greenyellow;
-  }
-  .yellow {
-    background-color: darkorange;
   }
   .bg-purple-dark {
     background: #99a9bf;
