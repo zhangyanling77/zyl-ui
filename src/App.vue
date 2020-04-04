@@ -161,6 +161,59 @@
           </zyl-container>
         </zyl-container>
       </div>
+      <h1>Input 输入框组件</h1>
+      <div class="block">
+        <zyl-input 
+          v-model="value"
+          type="text"
+          placeholder="请输入内容" 
+          name="username"></zyl-input>
+        
+        <zyl-input 
+          v-model="value"
+          type="password"
+          placeholder="请输入内容" 
+          name="username"></zyl-input>
+          
+          <zyl-input 
+          v-model="value"
+          type="password"
+          :disabled="true"
+          placeholder="请输入内容" 
+          name="username"></zyl-input>
+        
+        <zyl-input 
+          v-model="value"
+          type="password"
+          placeholder="请输入内容" 
+          name="username"
+          clearable></zyl-input>
+        
+        <zyl-input 
+          v-model="value"
+          type="password"
+          placeholder="请输入内容" 
+          name="username"
+          show-password
+          ></zyl-input>
+        
+        <zyl-input 
+          v-model="value"
+          type="password"
+          placeholder="请输入内容" 
+          name="username"
+          prefix-icon="edit"
+          ></zyl-input>
+        
+        <zyl-input 
+          v-model="value"
+          type="password"
+          placeholder="请输入内容" 
+          name="username"
+          suffix-icon="edit"
+          ></zyl-input>
+        {{value}}
+      </div>
     </div>
   </div>
 </template>
@@ -169,6 +222,11 @@
 
 export default {
   name: 'App',
+  data() {
+    return {
+      value: ''
+    }
+  },
   methods: {
     fn(e) {
       console.log(e)
