@@ -13,14 +13,14 @@
     />
     <!-- @mousedown.native.prevent  不会失去焦点 -->
     <zyl-icon
-      icon="qingkong"
+      icon="close-circle"
       v-if="clearable && value"
       @click.native="$emit('input','')"
       @mousedown.native.prevent
     ></zyl-icon>
     <!-- 先失去焦点 在获取焦点 -->
     <zyl-icon
-      icon="eye"
+      icon="key"
       v-if="showPassword && value"
       @click.native="changeStatus"
     ></zyl-icon>
@@ -100,7 +100,7 @@ export default {
   position: relative;
   input {
     padding: 8px;
-    width: 150px;
+    width: 240px;
     height: 42px;
     border-radius: 4px;
     border: 1px solid #dcdfe6;

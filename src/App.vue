@@ -284,5 +284,10 @@ export default {
   .zyl-container:nth-child(7) .zyl-aside {
     line-height: 320px;
   }
+
+  .zyl-input {
+    display: inline-block;
+    margin-bottom: 24px;
+  }
 }
 </style>
