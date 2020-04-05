@@ -177,14 +177,14 @@
           
           <zyl-input 
           v-model="value"
-          type="password"
+          type="text"
           :disabled="true"
           placeholder="请输入内容" 
           name="username"></zyl-input>
         
         <zyl-input 
           v-model="value"
-          type="password"
+          type="text"
           placeholder="请输入内容" 
           name="username"
           clearable></zyl-input>
@@ -199,7 +199,7 @@
         
         <zyl-input 
           v-model="value"
-          type="password"
+          type="text"
           placeholder="请输入内容" 
           name="username"
           prefix-icon="edit"
@@ -207,7 +207,7 @@
         
         <zyl-input 
           v-model="value"
-          type="password"
+          type="text"
           placeholder="请输入内容" 
           name="username"
           suffix-icon="edit"
