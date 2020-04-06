@@ -24,12 +24,6 @@
       v-if="showPassword && value"
       @click.native="changeStatus"
     ></zyl-icon>
-
-    <!-- 
-        zyl-radio
-        zyl-checkbox
-        zyl-input
-     -->
   </div>
 </template>
 <script>
@@ -85,6 +79,7 @@ export default {
   methods: {
     changeStatus() {
       this.passwordVisible = !this.passwordVisible;
+      // 让它在下一个事件环获取焦点
       this.$nextTick(() => {
         this.$refs.input.focus();
       });
