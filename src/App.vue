@@ -286,8 +286,7 @@ export default {
   }
 
   .zyl-input {
-    display: inline-block;
-    margin-bottom: 24px;
+     margin: 0 24px 24px 0;
   }
 }
 </style>
