@@ -107,7 +107,7 @@
           </zyl-col>
         </zyl-row>
       </div>
-      <h1>Layout 布局组件</h1>
+      <h1>Container 布局容器组件</h1>
       <div class="block">
         <zyl-container>
           <zyl-header>Header</zyl-header>
