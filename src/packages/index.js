@@ -10,6 +10,7 @@ import Footer from './container/footer.vue';
 import Header from './container/header.vue';
 import Main from './container/main.vue';
 import Input from './input/input.vue';
+import Upload from './upload/upload.vue';
 
 const install = Vue => {
   Vue.component(Button.name, Button)
@@ -23,6 +24,7 @@ const install = Vue => {
   Vue.component(Header.name,Header)
   Vue.component(Main.name,Main)
   Vue.component(Input.name, Input)
+  Vue.component(Upload.name, Upload)
 }
 
 /**
