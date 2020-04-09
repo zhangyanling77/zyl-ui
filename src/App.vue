@@ -173,7 +173,7 @@
           v-model="value"
           type="password"
           placeholder="请输入内容" 
-          name="username"></zyl-input>
+          name="password"></zyl-input>
           
           <zyl-input 
           v-model="value"
@@ -193,7 +193,7 @@
           v-model="value"
           type="password"
           placeholder="请输入内容" 
-          name="username"
+          name="password"
           show-password
           ></zyl-input>
         
