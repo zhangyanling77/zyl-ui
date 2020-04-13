@@ -222,13 +222,14 @@
           accept="image/jpeg,image/png"
           :file-list="fileList"
           :limit="3"
-          :multiple="false"
+          :multiple="true"
           :on-exceed="handleExceed"
           :on-change="handleChange"
           :on-success="handleSuccess"
           :on-error="handleError"
           :on-progress="handleProgress"
           :before-upload="handleBeforeUpload"
+          :drag="true"
         >
           <zyl-button icon="upload" type="primary" icon-position="right">上传文件</zyl-button>
           <div slot="tip">只能上传jpeg、png文件，且大小不超过500kb</div>
