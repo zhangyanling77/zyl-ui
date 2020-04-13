@@ -11,6 +11,7 @@ import Header from './container/header.vue';
 import Main from './container/main.vue';
 import Input from './input/input.vue';
 import Upload from './upload/upload.vue';
+import Progress from './progress.vue';
 
 const install = Vue => {
   Vue.component(Button.name, Button)
@@ -25,6 +26,7 @@ const install = Vue => {
   Vue.component(Main.name,Main)
   Vue.component(Input.name, Input)
   Vue.component(Upload.name, Upload)
+  Vue.component(Progress.name, Progress)
 }
 
 /**
