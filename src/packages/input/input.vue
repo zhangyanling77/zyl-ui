@@ -9,6 +9,9 @@
       :name="name"
       :disabled="disabled"
       @input="$emit('input',$event.target.value)"
+      @focus="$emit('focus',$event.target.value)"
+      @blur="$emit('blur',$event.target.value)"
+      @change="$emit('change',$event)"
       ref="input"
     />
     <!-- @mousedown.native.prevent  不会失去焦点 -->
