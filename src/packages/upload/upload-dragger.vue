@@ -5,7 +5,7 @@
     @dragover.prevent
     @dragleave.prevent
   >
-    <zyl-icon icon="upload" class="icon"></zyl-icon>
+    <zyl-icon icon="cloud-upload" class="icon"></zyl-icon>
     <span>将文件拖拽到此区域即可</span>
   </div>
 </template>
