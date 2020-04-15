@@ -20,7 +20,7 @@
     ></zyl-icon>
     <!-- 先失去焦点 在获取焦点 -->
     <zyl-icon
-      icon="key"
+      :icon="!passwordVisible?'eye':'eye-close'"
       v-if="showPassword && value"
       @click.native="changeStatus"
     ></zyl-icon>
