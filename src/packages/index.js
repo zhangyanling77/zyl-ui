@@ -11,7 +11,9 @@ import Header from './container/header.vue';
 import Main from './container/main.vue';
 import Input from './input/input.vue';
 import Upload from './upload/upload.vue';
-import Progress from './progress.vue';
+import Progress from './progress/progress.vue';
+import DatePicker from './date-picker/date-picker.vue';
+import DateRangePicker from './date-picker//date-range-picker.vue';
 
 const install = Vue => {
   Vue.component(Button.name, Button)
@@ -19,14 +21,16 @@ const install = Vue => {
   Vue.component(ButtonGroup.name, ButtonGroup)
   Vue.component(Row.name, Row)
   Vue.component(Col.name, Col)
-  Vue.component(Aside.name,Aside)
-  Vue.component(Container.name,Container)
-  Vue.component(Footer.name,Footer)
-  Vue.component(Header.name,Header)
-  Vue.component(Main.name,Main)
+  Vue.component(Aside.name, Aside)
+  Vue.component(Container.name, Container)
+  Vue.component(Footer.name, Footer)
+  Vue.component(Header.name, Header)
+  Vue.component(Main.name, Main)
   Vue.component(Input.name, Input)
   Vue.component(Upload.name, Upload)
   Vue.component(Progress.name, Progress)
+  Vue.component(DatePicker.name, DatePicker)
+  Vue.component(DateRangePicker.name, DateRangePicker)
 }
 
 /**
