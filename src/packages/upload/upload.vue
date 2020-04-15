@@ -22,7 +22,7 @@
     <ul>
       <li v-for="file in files" :key="file.uid">
         <div class="list-item">
-          <zyl-icon icon="image"></zyl-icon>
+          <zyl-icon icon="attachment"></zyl-icon>
            <img :src="file.url" alt="">
           {{file.name}}
           <zyl-progress v-if="file.status === UPLOAD_STATUS.UPLOADING" :percentage="file.percentage"></zyl-progress>
