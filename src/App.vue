@@ -241,6 +241,14 @@
         <br/>
         <!-- <zyl-date-range-picker v-model="dateRangeValue"></zyl-date-range-picker> -->
       </div>
+      <h1>InfiniteScroll 无限滚动指令</h1>
+      <div class="block">
+        
+      </div>
+      <h1>Popover 弹出框组件</h1>
+      <div class="block">
+        <zyl-popover></zyl-popover>
+      </div>
     </div>
   </div>
 </template>
