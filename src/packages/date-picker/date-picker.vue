@@ -1,57 +1,61 @@
 <template>
   <div class="zyl-date-picker" v-click-outside="handleBlur">
-    <zyl-input suffix-icon="calendar" :value="formatDate" @focus="handleFocus"></zyl-input>
+    <zyl-input suffix-icon="calendar" :value="formatDate" @focus="handleFocus" @change="handleChange"></zyl-input>
     <div class="zyl-date-content" v-if="isVisible">
-      <div class="zyl-date-picker-content">
-        <template v-if="mode === 'date'">
-          <div class="zyl-date-picker-header">
-            <zyl-icon icon="doubleleft"></zyl-icon>
-            <zyl-icon icon="left"></zyl-icon>
-            <span>
-              <b @click="mode='year'">{{tempTime.year}}</b>年
-              <b @click="mode='month'">{{tempTime.month + 1}}</b>月
-            </span>
-            <zyl-icon icon="right"></zyl-icon>
-            <zyl-icon icon="doubleright"></zyl-icon>
-          </div>
-          <div>
-            <span v-for="week in weeks" class="cell" :key="week">{{week}}</span>
-          </div>
-          <div v-for="i in 6" :key="`row_${i}`">
-            <span
-              v-for="j in 7"
-              :key="`col_${j}`"
-              class="cell cell-dates"
-              @click="selectDate(getCurrentDate(i,j))"
-              :class="{
-                    isNotCurrentMonth:!isCurrentMonth(getCurrentDate(i,j)),
-                    isToday:isToday(getCurrentDate(i,j)),
-                    isSelect:isSelect(getCurrentDate(i,j))
-                }"
-            >
-              {{getCurrentDate(i,j).getDate()}}
-            </span>
-          </div>
-        </template>
-        <template v-if="mode === 'year'">
-          <div class="zyl-date-picker-header">
-            <zyl-icon icon="doubleleft" @click="changeYear(-10)"></zyl-icon>
-            <span>
-              <b @click="mode='year'">{{startYear}}年{{startYear+9}}年</b>
-            </span>
-            <zyl-icon icon="doubleright" @click="changeYear(10)"></zyl-icon>
-          </div>
-        </template>
-        <template v-if="mode === 'month'">
-          <div class="zyl-date-picker-header">
-            <zyl-icon icon="left" @click="changeMonth(-1)"></zyl-icon>
-            <span>
-              <b @click="mode='month'">{{this.tempTime.year}}年</b>
-            </span>
-            <zyl-icon icon="right" @click="changeMonth(1)"></zyl-icon>
-          </div>
-        </template>
-      </div>
+      <template v-if="mode === 'date'">
+        <div class="zyl-date-picker-header">
+          <zyl-icon icon="doubleleft" @click="changeYear(-1)"></zyl-icon>
+          <zyl-icon icon="left" @click="changeMonth(-1)"></zyl-icon>
+          <span>
+            <b @click="mode='year'">{{tempTime.year}}</b>年
+            <b @click="mode='month'">{{tempTime.month + 1}}</b>月
+          </span>
+          <zyl-icon icon="right" @click="changeMonth(1)"></zyl-icon>
+          <zyl-icon icon="doubleright" @click="changeYear(1)"></zyl-icon>
+        </div>
+        <div>
+          <span v-for="week in weeks" class="cell" :key="week">{{week}}</span>
+        </div>
+        <div class="zyl-date-picker-content" v-for="i in 6" :key="`row_${i}`">
+          <span
+            v-for="j in 7"
+            :key="`col_${j}`"
+            class="cell cell-dates"
+            @click="selectDate(getCurrentDate(i,j))"
+            :class="{
+                  isNotCurrentMonth:!isCurrentMonth(getCurrentDate(i,j)),
+                  isToday:isToday(getCurrentDate(i,j)),
+                  isSelect:isSelect(getCurrentDate(i,j))
+              }"
+          >
+            {{getCurrentDate(i,j).getDate()}}
+          </span>
+        </div>
+      </template>
+      <template v-if="mode === 'year'">
+        <div class="zyl-date-picker-header">
+          <zyl-icon icon="doubleleft" @click="changeYear(-10)"></zyl-icon>
+          <span>
+            <b @click="mode='year'">{{startYear}}年 ~ {{startYear+9}}年</b>
+          </span>
+          <zyl-icon icon="doubleright" @click="changeYear(10)"></zyl-icon>
+        </div>
+        <div class="zyl-date-picker-content">
+          year
+        </div>
+      </template>
+      <template v-if="mode === 'month'">
+        <div class="zyl-date-picker-header">
+          <zyl-icon icon="left" @click="changeMonth(-1)"></zyl-icon>
+          <span>
+            <b @click="mode='year'">{{this.tempTime.year}}年</b>
+          </span>
+          <zyl-icon icon="right" @click="changeMonth(1)"></zyl-icon>
+        </div>
+        <div class="zyl-date-picker-content">
+          month
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -150,6 +154,9 @@ export default {
         // 补0操作
         return `${year}-${(month + 1 + "").padStart(2, 0)}-${(day + "").padStart(2, 0)}`;
       }
+    },
+    startYear(){ // 2023  2020   2023 -  2023%10 = 3
+      return this.tempTime.year - this.tempTime.year%10
     }
   },
   methods: {
@@ -158,11 +165,10 @@ export default {
       let newValue = e.target.value;
       let regExp = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
       if (newValue.match(regExp)) {
-        //  更新输入框内容
-        // 自己兼容
+        // 更新输入框内容 会自己兼容 $1,2,3 是正则捕获到的分组
         this.$emit("input", new Date(RegExp.$1, RegExp.$2 - 1, RegExp.$3));
       } else {
-        e.target.value = this.formateDate; // 将原来的值赋予回去 不用了
+        e.target.value = this.formatDate; // 将原来的值赋予回去 乱写的不匹配
       }
       this.handleBlur(); // 失去焦点
     },
@@ -183,7 +189,7 @@ export default {
     },
     isToday(date) {
       let [y, m, d] = getYearMonthDay(date);
-      let [year, month, day] = getYearMonthDay(new Date());
+      let [year, month, day] = getYearMonthDay(new Date()); // 当前的年月日
       return year === y && month === m && day === d;
     },
     selectDate(date) {
@@ -219,7 +225,7 @@ export default {
 <style lang="scss">
 @import "@/styles/_var.scss";
 .zyl-date-picker {
-  border: 1px solid red;
+  // border: 1px solid red;
   display: inline-block;
   .zyl-date-content {
     position: absolute;
@@ -234,6 +240,9 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .zyl-icon, b {
+        cursor: pointer;
+      }
     }
     .cell {
       width: 40px;
