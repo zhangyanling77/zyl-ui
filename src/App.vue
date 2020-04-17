@@ -235,6 +235,12 @@
           <div slot="tip">只能上传jpeg、png文件，且大小不超过500kb</div>
         </zyl-upload>
       </div>
+      <h1>DatePicker 日期选择器组件</h1>
+      <div class="block">
+        <zyl-date-picker v-model="dateValue"></zyl-date-picker>
+        <br/>
+        <!-- <zyl-date-range-picker v-model="dateRangeValue"></zyl-date-range-picker> -->
+      </div>
     </div>
   </div>
 </template>
@@ -249,13 +255,11 @@ export default {
       fileList: [
         {
           url: '1.jpg',
-          name: 'avatar'
+          name: 'avatar.jpg'
         },
-        {
-          url: '2.jpg',
-          name: 'bg'
-        }
-      ]
+      ],
+      dateValue: new Date(),
+      dateRangeValue: [],
     }
   },
   methods: {
@@ -344,7 +348,7 @@ export default {
     line-height: 320px;
   }
 
-  .zyl-input {
+  >.zyl-input {
      margin: 0 24px 24px 0;
   }
 }
