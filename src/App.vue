@@ -243,11 +243,33 @@
       </div>
       <h1>InfiniteScroll 无限滚动指令</h1>
       <div class="block">
-        
+        <div style="overflow-y:scroll;border:1px solid red;" >
+          <ul
+            v-infinite-scroll="load"
+            infinite-scroll-disabled="hasMore"
+            infinite-scroll-delay="delay"
+            infinite-scroll-distance="distance"
+            infinite-scroll-immediate="immediate"
+            class="box"
+          >
+            <li v-for="c in count" :key="c">{{c}}</li>
+          </ul>
+        </div>
       </div>
       <h1>Popover 弹出框组件</h1>
       <div class="block">
-        <zyl-popover></zyl-popover>
+        <div style="margin:200px 0 0 300px;">
+          <zyl-popover
+            v-model="popVal"
+            width="200px"
+            title="标题"
+            content="内容，这是一个popover"
+            trigger="click"
+            placement="bottom"
+          >
+            <zyl-button slot="reference" type="primary">点我弹窗</zyl-button>
+          </zyl-popover>
+        </div>
       </div>
     </div>
   </div>
@@ -259,15 +281,26 @@ export default {
   name: 'App',
   data() {
     return {
+      // 表单
       value: '',
+      // 文件上传
       fileList: [
         {
           url: '1.jpg',
           name: 'avatar.jpg'
         },
       ],
+      // 日期
       dateValue: new Date(),
       dateRangeValue: [],
+      // 无限滚动
+      count: 0,
+      hasMore: false,
+      delay: 200,
+      distance: 30,
+      immediate: true,
+      // popover
+      popVal: true,
     }
   },
   methods: {
@@ -301,6 +334,9 @@ export default {
         console.log('上传图片大小不能超过 500kb!')
       }
       return allowImage && limitSize;
+    },
+    load() {
+      this.count += 2
     }
   }
 }
