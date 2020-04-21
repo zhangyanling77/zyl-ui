@@ -395,5 +395,10 @@ export default {
   >.zyl-input {
      margin: 0 24px 24px 0;
   }
+  .box {
+    width: 400px;
+    height: 300px;
+    // border: 1px solid #ddd;
+  }
 }
 </style>
