@@ -243,7 +243,7 @@
       </div>
       <h1>InfiniteScroll 无限滚动指令</h1>
       <div class="block">
-        <div style="overflow-y:scroll;border:1px solid red;" >
+        <div style="overflow-y:scroll;border:1px solid #ccc;" >
           <ul
             v-infinite-scroll="load"
             infinite-scroll-disabled="hasMore"
