@@ -258,18 +258,43 @@
       </div>
       <h1>Popover 弹出框组件</h1>
       <div class="block">
-        <div style="margin:200px 0 0 300px;">
-          <zyl-popover
-            v-model="popVal"
-            width="200px"
-            title="标题"
-            content="内容，这是一个popover"
-            trigger="click"
-            placement="bottom"
-          >
-            <zyl-button slot="reference" type="primary">点我弹窗</zyl-button>
-          </zyl-popover>
-        </div>
+        <zyl-popover
+          v-model="popVal"
+          width="200px"
+          title="标题"
+          content="内容，这是一个popover"
+          trigger="click"
+          placement="bottom"
+        >
+          <zyl-button slot="reference" type="primary">点我弹窗</zyl-button>
+        </zyl-popover>
+      </div>
+      <h1>Carousel 走马灯组件</h1>
+      <div class="block">
+        <zyl-carousel
+          height="240px"
+          :autoplay="true"
+          :delay="2000"
+          :initial-index="0"
+          :loop="true"
+          @change="change"
+        >
+          <zyl-carousel-item>
+            <div class="content bg-purple-dark">
+              内容1
+            </div>
+          </zyl-carousel-item>
+          <zyl-carousel-item>
+            <div class="content bg-purple">
+              内容2
+            </div>
+          </zyl-carousel-item>
+          <zyl-carousel-item>
+            <div class="content bg-purple-dark">
+              内容3
+            </div>
+          </zyl-carousel-item>
+        </zyl-carousel>
       </div>
     </div>
   </div>
@@ -337,6 +362,9 @@ export default {
     },
     load() {
       this.count += 2
+    },
+    change(index) {
+      console.log(index)
     }
   }
 }
@@ -399,6 +427,11 @@ export default {
     width: 400px;
     height: 300px;
     // border: 1px solid #ddd;
+  }
+  .content {
+    width: 100%;
+    height: 100%;
+    text-align: center;
   }
 }
 </style>
