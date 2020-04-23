@@ -53,9 +53,3 @@ if (typeof Window.Vue !== 'undefined') {
 export default {
   install
 }
-
-/**
- * 用法
-  import zylUI from 'zyl-ui';
-  Vue.use(zylUI)
- */
