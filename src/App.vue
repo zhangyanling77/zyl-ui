@@ -296,6 +296,19 @@
           </zyl-carousel-item>
         </zyl-carousel>
       </div>
+      <h1>Pagination 分页组件</h1>
+      <div class="block">
+        <!-- 
+          total 一共有多少页
+          pager-count 当前分页器中最多有多少个按钮 
+          current-page.sync  同步当前的页
+        -->
+        <zyl-pagination
+          :total="10"
+          :pager-count="7"
+          :current-page.sync="currentPage"
+        ></zyl-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -326,6 +339,8 @@ export default {
       immediate: true,
       // popover
       popVal: true,
+      // pagination
+      currentPage: 5,
     }
   },
   methods: {
