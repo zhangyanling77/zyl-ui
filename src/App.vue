@@ -309,6 +309,13 @@
           :current-page.sync="currentPage"
         ></zyl-pagination>
       </div>
+      <h1>Table 表格组件</h1>
+      <div class="block">
+        <zyl-table
+        :columns="columns"
+        :data="data1"
+        ></zyl-table>
+      </div>
     </div>
   </div>
 </template>
@@ -341,6 +348,58 @@ export default {
       popVal: true,
       // pagination
       currentPage: 5,
+      columns1: [
+        {
+          type:'selection',
+          width:60
+        },
+        {
+          title: "Name",
+          key: "name",
+          slot:'name'
+        },
+        {
+          title: "Age",
+          key: "age",
+          sortable:'custom', // iview  默认排序 排序方法 custom（远程排序）
+          sortType:'asc',
+        },
+        {
+          title: "Address",
+          key: "address"
+        },
+        {
+          title:'operator',
+          slot:'action',
+          key: "operator"
+        }
+      ],
+      data1: [
+        {
+          name: "John Brown",
+          age: 18,
+          address: "New York No. 1 Lake Park",
+          date: "2016-10-03"
+        },
+        {
+          name: "Jim Green",
+          age: 24,
+          address: "London No. 1 Lake Park",
+          date: "2016-10-01"
+        },
+        {
+          name: "Joe Black",
+          age: 30,
+          address: "Sydney No. 1 Lake Park",
+          date: "2016-10-02"
+        },
+        {
+          name: "Jon Snow",
+          age: 26,
+          address: "Ottawa No. 2 Lake Park",
+          date: "2016-10-04"
+        }
+      ],
     }
   },
   methods: {
