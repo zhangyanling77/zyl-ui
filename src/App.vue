@@ -312,9 +312,20 @@
       <h1>Table 表格组件</h1>
       <div class="block">
         <zyl-table
-        :columns="columns"
-        :data="data1"
-        ></zyl-table>
+          :columns="columns1"
+          :data="data1"
+          @on-select="selectHandle"
+          @on-select-all="selectAllHandle"
+          @on-sort-change="changeHandle"
+          height="200px"
+        >
+          <template slot="name" slot-scope="{row,col}">
+              <h1> {{row[col.key]}} </h1>
+          </template>
+          <template slot="action" slot-scope="{row,col}">
+            <zyl-button>删除</zyl-button>
+          </template>
+        </zyl-table>
       </div>
     </div>
   </div>
@@ -439,7 +450,17 @@ export default {
     },
     change(index) {
       console.log(index)
-    }
+    },
+    selectHandle(selection,row) {
+      // selection 表示选中的所有的  row 表示当前是哪一个
+      console.log(selection,row)
+    },
+    selectAllHandle(selection) {
+      console.log(selection)
+    },
+    changeHandle({col,type}) {
+      console.log(col,type)
+    },
   }
 }
 </script>
