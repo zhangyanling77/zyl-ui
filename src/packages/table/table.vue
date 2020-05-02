@@ -7,8 +7,20 @@
             <div v-if="col.type == 'selection'">
               <input type="checkbox" :checked="checkAllStatus" ref="checkAll" @change="selectAll" />
             </div>
-            <div v-else>
-              {{col.title}}
+            <div v-else class="zyl-table-cell">
+              <span>{{col.title}}</span>
+              <span v-if="col.sortable" class="sortable">
+                <zyl-icon
+                  icon="up"
+                  :class="{active:isAsc(col)}"
+                  @click="sort(col,isAsc(col)?'normal':'asc')"
+                ></zyl-icon>
+                <zyl-icon
+                  icon="down"
+                  :class="{active:isDesc(col)}"
+                  @click="sort(col,isDesc(col)?'normal':'desc')"
+                ></zyl-icon>
+              </span>
             </div>
           </th>
         </tr>
@@ -41,7 +53,10 @@ export default {
     data: {
       type: Array,
       default: () => [],
-    }
+    },
+    height: {
+      type: String
+    },
   },
   data() {
     return {
@@ -72,6 +87,12 @@ export default {
       row._id = Math.random();
       return row;
     });
+    // 处理排序状态
+    this.cloneColumns = this.cloneColumns.map(col => {
+      col.sortType = col.sortType ? col.sortType : "normal"; // normal 表示没有排序
+      this.sort(col, col.sortType);
+      return col;
+    });
   },
   methods: {
     isChecked(row) {
@@ -89,11 +110,42 @@ export default {
       }
       this.$emit("on-select", this.selectedItems, row);
     },
+    isAsc(col) {
+      return col.sortType == "asc";
+    },
+    isDesc(col) {
+      return col.sortType == "desc";
+    },
+    sort(col, type) {
+      let data = cloneDeep(this.data);
+      col.sortType = type;
+      if (col.sortable !== "custom") {
+        if (type !== "normal") {
+          let key = col.key;
+          this.cloneData = data.sort((a, b) => {
+            if (type == "asc") {
+              return a[key] - b[key];
+            } else {
+              return b[key] - a[key];
+            }
+          });
+        } else {
+          // 如果不需要排序 就把默认的结果 赋予给数据即可
+          this.cloneData = data;
+        }
+      } else {
+        this.$emit("on-sort-change", {
+          col: cloneDeep(col),
+          type
+        });
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss">
+@import "@/styles/_var.scss";
 .zyl-table {
   table {
     border-collapse: collapse;
@@ -107,6 +159,26 @@ export default {
       border-bottom: 1px solid #ddd;
       padding: 8px;
       text-align: left;
+    }
+  }
+  .zyl-table-cell {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    >span:first-child{
+      margin-right: 6px;
+    }
+    .sortable {
+      display: flex;
+      flex-direction: column;
+      .zyl-icon {
+        width: 12px;
+        height: 12px;
+        cursor: pointer;
+      }
+      .active {
+        fill: $primary;
+      }
     }
   }
 }
