@@ -320,7 +320,7 @@
           height="200px"
         >
           <template slot="name" slot-scope="{row,col}">
-              <h1> {{row[col.key]}} </h1>
+            <b>{{row[col.key]}}</b>
           </template>
           <template slot="action" slot-scope="{row,col}">
             <zyl-button>删除</zyl-button>
