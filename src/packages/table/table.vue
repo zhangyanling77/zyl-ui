@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     checkAllStatus() {
-      return this.cloneData.length == this.selectedItems.length;
+      return this.cloneData.length === this.selectedItems.length;
     }
   },
   methods: {
@@ -108,7 +108,7 @@ export default {
       this.$emit("on-select", this.selectedItems, row);
     },
     sort(col, type) {
-      let data = cloneDeep(this.data);
+      let data = this.cloneData;
       col.sortType = type;
       if (col.sortable !== "custom") {
         if (type !== "normal") {
@@ -138,6 +138,7 @@ export default {
       row._id = Math.random();
       return row;
     });
+    console.log('data', this.cloneData)
     this.cloneColumns = this.cloneColumns.map(col => {
       col.sortType = col.sortType ? col.sortType : "normal";
       this.sort(col, col.sortType);
