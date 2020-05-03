@@ -372,7 +372,7 @@ export default {
         {
           title: "Age",
           key: "age",
-          sortable:'normal', // iview  默认排序 排序方法 custom（远程排序）
+          sortable:'custom', // iview  默认排序 排序方法 custom（远程排序）
           sortType:'asc',
         },
         {

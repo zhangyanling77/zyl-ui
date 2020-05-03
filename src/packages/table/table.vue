@@ -110,7 +110,7 @@ export default {
     sort(col, type) {
       let data = this.cloneData;
       col.sortType = type;
-      if (col.sortable !== "custom") {
+      if (col.sortable !== "custom") { // 远程排序，即后端排序
         if (type !== "normal") {
           let key = col.key;
           this.cloneData = data.sort((a, b) => {
@@ -134,11 +134,12 @@ export default {
   },
   // 单向数据流
   created() {
+    // 添加唯一标识_id
     this.cloneData = this.cloneData.map(row => {
       row._id = Math.random();
       return row;
     });
-    console.log('data', this.cloneData)
+    // 初始化排序
     this.cloneColumns = this.cloneColumns.map(col => {
       col.sortType = col.sortType ? col.sortType : "normal";
       this.sort(col, col.sortType);
@@ -158,7 +159,7 @@ export default {
 
       copyTable.appendChild(thead);
       copyTable.style.width = table.offsetWidth + "px";
-
+      // 固定表头
       copyTable.classList.add("fix-header");
 
       let tds = table.querySelector("tbody tr").children;
@@ -192,7 +193,7 @@ export default {
     }
     th,
     td {
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #d9d9d9;
       padding: 8px;
       text-align: left;
     }
