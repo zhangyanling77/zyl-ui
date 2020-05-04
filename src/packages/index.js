@@ -20,6 +20,8 @@ import Carousel from './carousel/carousel.vue';
 import CarouselItem from './carousel/carousel-item.vue';
 import Pagination from './pagination/pagination.vue';
 import Table from './table/table.vue';
+import Form from './form/form.vue';
+import Menu from './menu/menu.vue';
 
 const install = Vue => {
   Vue.component(Button.name, Button)
@@ -45,6 +47,8 @@ const install = Vue => {
   Vue.component(CarouselItem.name, CarouselItem)
   Vue.component(Pagination.name, Pagination)
   Vue.component(Table.name, Table)
+  Vue.component(Form.name, Form)
+  Vue.component(Menu.name, Menu)
 }
 
 /**

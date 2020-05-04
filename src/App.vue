@@ -327,6 +327,14 @@
           </template>
         </zyl-table>
       </div>
+      <h1>Form 表单组件</h1>
+      <div class="block">
+        <zyl-form></zyl-form>
+      </div>
+      <h1>Menu 菜单组件</h1>
+      <div class="block">
+        <zyl-menu></zyl-menu>
+      </div>
     </div>
   </div>
 </template>
