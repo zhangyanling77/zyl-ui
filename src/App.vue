@@ -327,6 +327,17 @@
           </template>
         </zyl-table>
       </div>
+      <h1>Progress 进度条组件</h1>
+      <div class="block">
+        <zyl-progress 
+          :strokeWidth="10"
+          :percentage="percent"
+          :color="red"
+        ></zyl-progress>
+        <div>
+          当前进度：{{percent}}
+        </div>
+      </div>
       <h1>Form 表单组件</h1>
       <div class="block">
         <zyl-form></zyl-form>
@@ -419,6 +430,7 @@ export default {
           date: "2016-10-04"
         }
       ],
+      percent: 50,
     }
   },
   methods: {
