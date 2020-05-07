@@ -160,8 +160,9 @@ export default {
       copyTable.appendChild(thead);
       copyTable.style.width = table.offsetWidth + "px";
       // 固定表头
-      copyTable.classList.add("fix-header");
-
+      if (this.height) {
+        copyTable.classList.add("fix-header");
+      }
       let tds = table.querySelector("tbody tr").children;
       let ths = copyTable.querySelector("thead tr").children;
 
@@ -221,6 +222,6 @@ export default {
 }
 
 .table-wrapper {
-  overflow-y: scroll;
+  overflow-y: auto; // scroll
 }
 </style>
