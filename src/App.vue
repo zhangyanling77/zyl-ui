@@ -332,7 +332,7 @@
         <zyl-progress 
           :strokeWidth="10"
           :percentage="percent"
-          :color="red"
+          color="red"
         ></zyl-progress>
         <div>
           当前进度：{{percent}}
