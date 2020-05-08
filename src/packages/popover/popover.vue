@@ -95,9 +95,8 @@ export default {
     handleDocumentClick(e) {
       if (this.$el.contains(e.target)) {
         return false;
-      } else {
-        this.visible = false
       }
+      this.visible = false
     },
     handleMouseEnter() {
       clearTimeout(this.timer);
