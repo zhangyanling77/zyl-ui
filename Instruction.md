@@ -4,7 +4,9 @@
 
 本文就如何从零搭建一个UI组件库及文档的过程做个简要的描述。文章内容涉及到组件库搭建的流程、工具、配置等，参考了`Element UI`和`iView`的做法。
 
-附项目地址：[zyl-ui](https://github.com/zhangyanling77/zyl-ui)
+UI组件库地址：[zyl-ui](https://github.com/zhangyanling77/zyl-ui)
+
+文档地址：[zyl-docs](https://github.com/zhangyanling77/zyl-docs)
 
 ## 项目搭建
 
