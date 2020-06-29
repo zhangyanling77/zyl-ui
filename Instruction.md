@@ -1,10 +1,26 @@
-# 从零搭建基于`Vue`组件库 zyl-ui
+# 基于Vue2.6搭建UI组件库+VuePress搭建文档
 
-## 一.通过`Vue-Cli`初始化项目
+在日常业务开发中我们大都会自己封装组件，可能是业务组件，也可能是UI组件。当然，已经有很多优秀的开源UI组件库，比如`Ant Design`、`Element UI`、`Material UI`等，也基本能够满足我们的日常开发。然而，同一个世界，却不是同一个设计师，不同的公司UI设计师有着自己不同的设计风格，那么针对这种情况就需要自己封装实现一套符合自己公司设计理念的UI组件库。
+
+本文就如何从零搭建一个UI组件库及文档的过程做个简要的描述。文章内容涉及到组件库搭建的流程、工具、配置等，参考了`Element UI`和`iView`的做法。
+
+附项目地址：[zyl-ui](https://github.com/zhangyanling77/zyl-ui)
+
+## 项目搭建
+
+### vue-cli 初始化项目
 
 ```bash
 vue create zyl-ui
 ```
+
+```bash
+? Please pick a preset:
+  default (babel, eslint)
+> Manually select features
+```
+
+选择需要支持的特性
 
 ```bash
 ? Check the features needed for your project:
@@ -19,108 +35,117 @@ vue create zyl-ui
  ( ) E2E Testing
 ```
 
-```shell
-> Sass/SCSS (with dart-sass)  
+选择CSS预处理器
+
+```bash
+? Pick a CSS pre-processor (PostCSS, Autoprefixer and CSS Modules are supported by default):
+> Sass/SCSS (with dart-sass) # 速度快、易于安装，并且可以被编译成纯 JavaScript 代码
   Sass/SCSS (with node-sass)
   Less
   Stylus
 ```
 
-> 为什么选择[dart-sass]( https://www.dart-china.org/t/topic/146  )?
+选择单元测试方案
 
 ```bash
 ? Pick a unit testing solution:
-> Mocha + Chai # ui测试需要使用karma
+> Mocha + Chai # UI测试使用karma
   Jest
 ```
 
-## 三.目录结构配置
+### 目录结构及配置
 
-```bash
-│  .browserslistrc # 兼容版本
-│  .gitignore
-│  babel.config.js # babel的配置文件
-│  package-lock.json
-│  package.json
-│  README.md      
+```bash    
 ├─public
-│      favicon.ico
-│      index.html 
+│     favicon.ico
+│     index.html 
 ├─src
 │  │  App.vue 
 │  │  main.js
 │  │  
-│  ├─packages # 需要打包的组件
-│  │      button.vue
-│  │      icon.vue
-│  │      index.js # 所有组件的入口
+│  ├─packages # 开发的组件
+|  |    button
+│  │      └─button.vue
+│  │    index.js # 所有组件的入口
 │  │       
 │  └─styles # 公共样式
-│          _var.scss  
-|          icon.js # iconfont js文件
-└─tests # 单元测试
-    └─unit
-            button.spec.js
+│       _var.scss  
+|       icon.js # iconfont js文件
+|─tests # 单元测试
+|    └─unit
+|       └─button.spec.js          
+│  .browserslistrc # 浏览器版本兼容设置
+│  .gitignore # 忽略文件
+│  .babelrc # babel的配置文件
+│  package-lock.json
+│  package.json
+│  README.md 
 ```
 
-## 四.编写插件入口
+### 组件库入口
+
+`src/packages/index.js`
 
 ```javascript
-import Button from './button.vue';
-import Icon from './icon.vue';
+import Button from './button/button.vue';
+// ... 其他组件
 
-const install = (Vue) =>{ // 对外暴露install方法
-    Vue.component(Button.name,Button);
-    Vue.component(Icon.name,Icon);
+// 全局注册组件
+const install = Vue => {
+  Vue.component(Button.name, Button)
+  // ... 其他组件
 }
-// 针对script方式引入的情况
-if(typeof window.Vue !== 'undefined'){
-    install(Vue);
+
+/**
+ * 有可能组件会通过script标签引入，如<script src='https://xxx/zyl-ui'></script>
+ */
+if (typeof Window.Vue !== 'undefined') {
+  install(Vue) // 全局直接通过script 引用的方式会默认调用install方法
 }
+
 export default {
-    install
+  install
 }
 ```
 
-```js
-import zylUI from  './packages';
+以插件的方式使用组件：
+
+`src/main.js`
+
+```javascript
+import zylUI from './packages';
+
 Vue.use(zylUI)
 ```
 
-> 我们可以通过插件的方式去引入我们的组件库
+### 组件开发
 
-## 五.编写Button组件
+这里以 button 组件为例。
 
-### 实现功能规划
+> 借鉴 `Element UI`，实现按钮的基本用法、带图标的按钮、加载状态按钮等功能。
 
-- [ ] 按钮的基本用法
-- [ ] 图标按钮
-- [ ] 按钮加载中状态
-- [ ] 按钮组的实现
+API设计
 
-### 准备备用样式
+参数|说明|类型|可选值|默认值
+:-|:-|:-|:-|:-|:-
+type|类型| string |primary / success / warning / danger / info | default
+icon|图标类名| string | - | -
+loading|是否加载中状态| boolean | - | false
+position|图标位置| string | left / right | left
+
+全局样式
+
+`_var.scss`
 
 ```scss
-$border-radius: 4px;
-
 $primary: #409EFF;
 $success: #67C23A;
 $warning: #E6A23C;
 $danger: #F56C6C;
 $info: #909399;
 
+// ... 其他样式
 
-$primary-hover: #66b1ff;
-$success-hover: #85ce61;
-$warning-hover: #ebb563;
-$danger-hover: #f78989;
-$info-hover: #a6a9ad;
-
-$primary-active: #3a8ee6;
-$success-active: #5daf34;
-$warning-active: #cf9236;
-$danger-active: #dd6161;
-$info-active: #82848a;
 * {
   padding: 0;
   margin: 0;
@@ -128,263 +153,110 @@ $info-active: #82848a;
 }
 ```
 
-#### (1).实现按钮的基本用法
+`packages/button/button.vue`
 
- 使用type属性来定义 Button 的样式。 
+基本结构：
 
-```vue
+> 以插槽（slot）的形式嵌套内容
+
+```html
 <template>
-  <button class="zyl-button" :class="btnClass">
-    <slot></slot>  
-  </button>
-</template>
-<script>
-export default {
-  props: {
-    type: {
-      type: String,
-      default: "",
-      validator(type) {
-        if (
-          type &&
-          !["warning", "success", "danger", "info", "primary"].includes(type)
-        ) {
-          console.error(
-            "类型必须是:" + `'warning','success','danger','info','primary'`
-          );
-        }
-        return true;
-      }
-    }
-  },
-  computed: {
-    btnClass() { // 动态添加按钮样式
-      let classes = [];
-      if (this.type) {
-        classes.push(`zyl-button-${this.type}`);
-      }
-      return classes;
-    }
-  },
-  name: "zyl-button"
-};
-</script>
-<style lang="scss">
-@import '../styles/_var.scss';
-$height: 42px;
-$font-size: 16px;
-$color: #606266;
-$border-color: #dcdfe6;
-$background: #ecf5ff;
-$active-color: #3a8ee6;
-.zyl-button {
-  border-radius: $border-radius;
-  border: 1px solid $border-color;
-  color: $color;
-  background: #fff;
-  height: 42px;
-  cursor: pointer;
-  font-size: $font-size;
-  line-height: 1;
-  padding: 12px 20px;
-  display: inline-flex;
-  justify-content: center;
-  vertical-align: middle;
-  &:hover {
-    border-color: $border-color;
-    background-color: $background;
-  }
-  &:focus,&:active {
-    color: $active-color;
-    border-color: $active-color;
-    background-color: $background;
-    outline: none;
-  }
-  @each $type,$color in (primary:$primary, success:$success, info:$info, warning:$warning, danger:$danger) {
-    &-#{$type} {
-      background:#{$color};
-      border: 1px solid #{$color};
-      color: #fff;
-    }
-  }
-  @each $type,$color in (primary:$primary-hover, success:$success-hover, info:$info-hover, warning:$warning-hover, danger:$danger-hover) {
-      &-#{$type}:hover {
-          background: #{$color};
-          border: 1px solid #{$color};
-          color: #fff;
-      }
-  }
-  @each $type,$color in (primary:$primary-active, success:$success-active, info:$info-active, warning:$warning-active, danger:$danger-active) {
-      &-#{$type}:active, &-#{$type}:focus {
-        background: #{$color};
-        border: 1px solid #{$color};
-        color: #fff;
-      }
-  }
-}
-</style>
-```
-
-#### (2).图标按钮
-
- 带图标的按钮可增强辨识度（有文字）或节省空间（无文字）。 
-
-> 使用`iconfont`[添加图标](https://www.iconfont.cn)
-
-**创建图标组件**:
-
-```vue
-<template>
-  <svg class="zyl-icon" aria-hidden="true">
-    <use :xlink:href="`#icon-${icon}`" />
-  </svg>
-</template>
-<script>
-import "../styles/icon";
-export default {
-  props: {
-    icon: String
-  },
-  name: "zyl-icon"
-};
-</script>
-<style lang="scss">
-.zyl-icon {
-  width: 24px;
-  height: 24px;
-  vertical-align: middle;
-}
-</style>
-```
-
-```vue
-<button class="zyl-button" :class="btnClass">
-    <zyl-icon 
-        :icon="icon"
-        v-if="icon"
-        class="icon"
-    ></zyl-icon>
-    <span v-if="this.$slots.default">
-        <slot></slot>
-    </span>
-</button>
-<style>
-.icon{
-  fill:#fff;
-  width: 16px;height:16px;
-}
-.icon + span {
-  margin-left: 5px;
-}
-span + .icon {
-  margin-right: 5px;
-}
-</style>
-```
-
-#### (3).按钮加载中状态
-
- 要设置为 loading 状态，只要设置`loading`属性为`true`即可。 
-
-```vue
-<template>
-  <button class="zyl-button" :class="btnClass" :disabled="loading">
-    <zyl-icon :icon="icon" v-if="icon && !loading" class="icon"></zyl-icon>
-    <zyl-icon icon="sync" v-if="loading" class="icon loading"></zyl-icon>
+  <button class="zyl-button" :class="btnClass" :disabled="loading" @click="$emit('click', $event)">
+    <!-- 略，其他内容 -->
     <span v-if="this.$slots.default">
       <slot></slot>
     </span>
   </button>
 </template>
-<style>
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-.loading {
-  animation: spin 2s linear infinite;
-}
-</style>
 ```
 
-#### (4).按钮组的实现
+逻辑实现
 
- 以按钮组的方式出现，常用于多项类似操作。 
-
-```vue
-<template>
-    <div class="zyl-button-group">
-        <slot></slot>
-    </div>
-</template>
-
-<script>
+```javascript
 export default {
-    name:'zyl-button-group',
-    mounted () {
-    let children = this.$el.children
-    for (let i = 0; i < children.length; i++) {
-      console.assert(children[i].tagName === 'BUTTON', '必须子节点是button')
+  name: 'zyl-button',
+  props: {
+    type: {
+      type: String,
+      default: '',
+      validator(type) { // 校验
+        if (type && !['warning', 'primary', 'info', 'success', 'danger'].includes(type)) {
+          console.error('type类型不合法！必须为：' + ['warning', 'primary', 'info', 'success', 'danger'].join('、') + '其中之一。')
+        }
+        return true
+      }
+    },
+    // ... 其他属性
+  },
+  computed: { // 根据type设置button颜色
+    btnClass() {
+      let classes = []
+      if (this.type) {
+        classes.push(`zyl-button-${this.type}`)
+      }
+      // ... 其他逻辑
+      return classes
     }
   }
 }
-</script>
-<style lang="scss">
-@import "../styles/_var.scss";
-.zyl-button-group {
-  display: inline-flex;
-  vertical-align: middle;
-  button {
-    border-radius: 0;
-    position: relative;
-    &:not(first-child) {
-      margin-left: -1px;
-    }
-    &:first-child {
-      border-top-left-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
-    }
-    &:last-child {
-      border-top-right-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
-    }
-  }
-  button:hover {
-    z-index: 1;
-  }
-  button:focus {
-    z-index: 2;
-  }
-}
-</style>
 ```
 
-## 六.搭建测试环境
+样式设置
 
-我们需要测试`ui`渲染后的结果。需要在浏览器中测试,所有需要使用`Karma`
+```scss
+@import '@/styles/_var.scss';
 
-### `Karma`配置
+// ...
 
-#### (1)安装`karma`
+.zyl-button {
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+  height: $height;
+  font-size: $font-size;
+  cursor: pointer;
+  line-height: 1;
+  padding: 12px 20px;
+  display: inline-flex;
+  justify-content: center;
+  vertical-align: middle;
+  user-select: none;
+
+  // ...
+  
+  // 根据type设置button的样式
+  @each $type, $color in (primary: $primary, success: $success, info: $info, warning: $warning, danger: $danger) {
+    &-#{$type} {
+      background-color: #{$color};
+      border-color: #{$color};
+      color: #fff;
+      fill: #fff;
+    }
+  }
+  // ...其他样式设置
+```
+
+这样，简单的一个button组件就开发完毕了。为了保证我们的组件能够正常且稳定使用，还要需要添加单元测试。
+
+### 搭建测试环境
+
+我们要测试 `UI` 渲染后的结果。就需要在浏览器中测试，这里使用 `Karma`。
+
+- 安装 Karma
 
 ```bash
 npm install --save-dev @vue/test-utils karma karma-chrome-launcher karma-mocha karma-sourcemap-loader karma-spec-reporter karma-webpack mocha karma-chai
 ```
 
-#### (2)配置karma文件
+- 配置 karma 文件
 
 `karma.conf.js`
 
-```js
-var webpackConfig = require('@vue/cli-service/webpack.config')
+```javascript
+const webpackConfig = require('@vue/cli-service/webpack.config');
 
 module.exports = function(config) {
   config.set({
-    frameworks: ['mocha'],
+    frameworks: ['mocha'], // 设置测试框架
     files: ['tests/**/*.spec.js'],
     preprocessors: {
       '**/*.spec.js': ['webpack', 'sourcemap']
@@ -392,12 +264,14 @@ module.exports = function(config) {
     autoWatch: true,
     webpack: webpackConfig,
     reporters: ['spec'],
-    browsers: ['ChromeHeadless']
+    browsers: ['ChromeHeadless'] // 无头浏览器
   })
 }
 ```
 
-```bash
+`package.json`
+
+```json
 {
   "scripts": {
     "test": "karma start"
@@ -405,555 +279,283 @@ module.exports = function(config) {
 }
 ```
 
-### 单元测试
+### 编写单元测试
 
-```js
-import {
-    shallowMount
-} from '@vue/test-utils';
-import {
-    expect
-} from 'chai'
-import Button from '@/packages/button.vue'
-import Icon from '@/packages/icon'
+以button为例，编写单元测试。
 
-describe('button.vue', () => {
-    it('1.测试slot是否能正常显示', () => {
-        const wrapper = shallowMount(Button, {
-            slots: {
-                default: 'zyl-ui'
-            }
-        })
-        expect(wrapper.text()).to.equal('zyl-ui')
-    })
-    it('2.测试传入icon属性', () => {
-        const wrapper = shallowMount(Button, {
-            stubs: {
-                'zyl-icon': Icon
-            },
-            propsData: {
-                icon: 'edit' // 传入的是edit 测试一下 edit是否ok
-            }
-        })
-        expect(wrapper.find('use').attributes('href')).to.equal('#icon-edit')
-    })
-    it('3.测试传入loading,是否能，控制loading属性', () => {
-        const wrapper = shallowMount(Button, {
-            stubs: {
-                'zyl-icon': Icon
-            },
-            propsData: {
-                loading: true // 传入的是edit 测试一下 edit是否ok
-            }
-        })
-        expect(wrapper.find('use').attributes('href')).to.eq('#icon-sync');
-        expect(wrapper.find('button').attributes('disabled')).to.eq('disabled');
-    })
-    it('4.测试点击按钮', () => {
-        const wrapper = shallowMount(Button, {
-            stubs: ['zyl-icon']
-        })
-        wrapper.find('button').trigger('click')
-        expect(wrapper.emitted('click').length).to.eq(1);
+```javascript
+import {shallowMount} from '@vue/test-utils'; // vue提供的快速测试的方法
+import {expect} from 'chai';
+import Button from '@/packages/button/button.vue';
+
+// ...
+
+describe('button.vue',()=>{
+  it('1.测试button能否正常显示slot里的内容',()=>{ // 测试当前组件运行在浏览器的情况
+    const wrapper = shallowMount(Button, {
+      slots:{
+        default:'zyl-ui'
+      }
     });
-    // 5.测试前后图标
-    it('5.测试前后图标', () => {
-        const wrapper = shallowMount(Button, {
-            stubs: {
-                'zyl-icon': Icon
-            },
-            slots:{
-                default:'hello'
-            },
-            attachToDocument: true,
-            propsData: {
-                iconPosition: 'left',
-                icon: 'edit'
-            }
-        });
-        let ele = wrapper.vm.$el.querySelector('span');
-        expect(getComputedStyle(ele, null).order).to.eq('2');
-        wrapper.setProps({
-            iconPosition: 'right'
-        });
-        return wrapper.vm.$nextTick().then(() => {
-            expect(getComputedStyle(ele, null).order).to.eq('1');
-        });
-    });
+    expect(wrapper.text()).to.eq('zyl-ui');
+  })
+  // ... 其他测试逻辑
 })
 ```
 
-## 七.打包组件
-
-#### (1)配置打包命令
+运行测试任务
 
 ```bash
-"lib": "vue-cli-service build --target lib --name zyl-ui  ./src/packages/index.js"
+npm run test
 ```
 
-#### (2)配置运行入口
+### 组件打包
 
-```bash
+当组件库运行测试全部通过后，表示我们的组件是可正常使用的，那么就可以打包组件库了。注意，我们打包的格式可以是 UMD，CommonJS也可以是ES Module。
+
+- 配置打包命令
+
+`package.json`
+
+```json
+{
+  "scripts": {
+    "lib": "vue-cli-service build --target lib --name zyl-ui  ./src/packages/index.js"
+  }
+}
+```
+
+- 配置运行入口
+
+`package.json`
+
+```json
 "main": "./dist/zyl-ui.umd.min.js"
 ```
 
-#### (3)link到全局下
+- 将项目 link 到全局下
+
+在 zyl-ui 项目根目录下执行
 
 ```bash
 npm link
 ```
 
-## 八.使用`VuePress`搭建文档
+## VuePress搭建文档
 
-### `VuePress`基本配置:
+VuePress 是 Vue 驱动的静态网站生成器。支持在 Markdown 中使用 Vue 组件，简洁，高性能。当然你也可以使用其他的文档生成器，如 Docz、Storybook 等。
 
-#### (1).安装
+可以根据官方文档学习如何使用：https://www.vuepress.cn/guide/getting-started.html
 
-```
+### 项目生成及配置
+
+- 安装
+
+```bash
+mkdir zyl-docs && cd zyl-docs
+npm init -y
 npm install vuepress -D
 ```
 
-#### (2).配置scripts
+- 配置scripts
 
-```bash
+`package.json`
+
+```json
 {
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
 }
 ```
 
-#### (3).初始化docs
+- 初始化docs
 
-增加入口页面`README.MD`
+在项目根目录下建一个 docs 目录
 
+```bash 
+├─docs
+│  │─.vuepress
+│  │   components # demo
+|  |   styles # 文档展示样式
+|  |   config.js # 配置
+|  |   enhanceApp.js 
+│  │  
+│  ├─components # 所有组件的文档
+|  |   button.md
+│  │       
+│  └─README.md
+|
+│  .gitignore # 忽略文件
+│  package-lock.json
+│  package.json
+│  README.md 
 ```
+
+`docs/README.md `
+
+```markdown
 ---
 home: true
 actionText: 欢迎 →
 actionLink: /components/button
 features:
 - title: 搭建自己的组件库
-  details: 从0搭建自己的组件库
+  details: 基于 Vue2.6 从0搭建自己的组件库
 ---
 ```
 
-#### (4).配置导航
+- 配置导航
 
-增加`config.js`
+`docs/.vuepress/config.js`
 
-```js
+```javascript
 module.exports = {
-    title: 'zyl-ui', // 设置网站标题
-    description: 'ui 库', //描述
-    dest: './build', // 设置输出目录
-    port: 1234, //端口
-    themeConfig: { //主题配置
-        nav: [{
-                text: '主页',
-                link: '/'
-            }, // 导航条
-        ],
-        // 为以下路由添加侧边栏
-        sidebar: {
-            '/components/': [{
-                    collapsable: true,
-                    children: [
-                        'button'
-                    ]
-                }
-            ]
-        }
+  title: 'zyl-ui', // 设置网站标题
+  description: 'ui 组件库', // 描述
+  dest: './build', // 设置输出目录
+  port: 1234, // 端口
+  themeConfig: { // 主题配置
+    nav: [ // 头部导航条
+      {
+        text: '主页',
+        link: '/'
+      },
+    ],
+    // 为以下路由添加侧边栏
+    sidebar: {
+      '/components/': [
+        {
+          title: 'Basic',
+          collapsable: false,
+          children: [
+            'button',
+            // ... 其他组件
+          ]  
+        },
+        // 其他设置
+      ]
     }
+  }
 }
 ```
 
-#### (5).初始化配置文件 `.vuepress`
+- 客户端应用的增强文件 `enhanceApp.js`
 
-`enhanceApp.js`
+  > 这个文件用于添加组件Demo展示的优化的配置
 
-- 安装包
+  安装
 
   ```bash
   npm install element-ui highlight.js node-sass sass-loader --save
   ```
 
-- link组件库
+  link开发的组件库 zyl-ui
 
   ```bash
   npm link zyl-ui
   ```
 
-```js
-import Vue from 'vue';
-import Element from 'element-ui'; // 引入elementUi
-import 'element-ui/lib/theme-chalk/index.css'
+  `.vuepress/enhanceApp.js`
 
-import hljs from 'highlight.js'
-import 'highlight.js/styles/googlecode.css' //样式文件
+  ```javascript
+  import Vue from 'vue';
+  import ElementUI from 'element-ui'; // 全局引入element-ui
+  import 'element-ui/lib/theme-chalk/index.css';
 
-import zylUI from 'zyl-ui' // 要编写对应的文档的包
-import 'zyl-ui/dist/zyl-ui.css'
-Vue.directive('highlight',function (el) {
-  let blocks = el.querySelectorAll('pre code');
-  blocks.forEach((block)=>{
-    hljs.highlightBlock(block)
+  import hljs from 'highlight.js'; // 代码高亮
+  import 'highlight.js/styles/googlecode.css';
+
+  import zylUI from 'zyl-ui'; // 要编写对应的文档的包
+  import 'zyl-ui/dist/zyl-ui.css';
+  // 全局注册指令
+  Vue.directive('highlight',function (el) {
+    let blocks = el.querySelectorAll('pre code');
+    blocks.forEach((block)=>{
+      hljs.highlightBlock(block)
+    })
   })
-})
-export default ({
-  Vue,
-  options, 
-  router,
-  siteData
-}) => {
-  Vue.use(Element);
-  Vue.use(zylUI)
-}
-```
-
-#### (6).覆盖默认样式
-
-`styles/palette.styl`
-
-```stylus
-$codeBgColor = #fafafa // 代码背景颜色
-
-$accentColor = #3eaf7c
-$textColor = #2c3e50
-
-$borderColor = #eaecef
-$arrowBgColor = #ccc
-$badgeTipColor = #42b983
-$badgeWarningColor = darken(#ffe564, 35%)
-$badgeErrorColor = #DA5961
-
-.content pre{  margin: 0!important;}
-
-.theme-default-content:not(.custom){
-    max-width: 1000px !important;
-}
-```
-
-#### (7).创建components目录
-
-创建`demo-block`可收缩代码块
-
-```vue
-<template>
-  <div
-    class="demo-block"
-    :class="[blockClass, { 'hover': hovering }]"
-    @mouseenter="hovering = true"
-    @mouseleave="hovering = false">
-    <div style="padding:24px">
-        <slot name="source"></slot>
-    </div>
-    <div class="meta" ref="meta">
-      <div class="description" v-if="$slots.default">
-        <slot></slot>
-      </div>
-      <div class="highlight " v-highlight>
-        <slot name="highlight"></slot>
-      </div>
-    </div>
-    <div
-      class="demo-block-control"
-      ref="control"
-      @click="isExpanded = !isExpanded">
-      <transition name="arrow-slide">
-        <i :class="[iconClass, { 'hovering': hovering }]"></i>
-      </transition>
-      <transition name="text-slide">
-        <span v-show="hovering">{{ controlText }}</span>
-      </transition>
-    </div>
-  </div>
-</template>
-
-<style lang="scss">
-  .demo-block {
-    border: solid 1px #ebebeb;
-    border-radius: 3px;
-    transition: .2s;
-    &.hover {
-      box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5);
-    }
-
-    code {
-      font-family: Menlo, Monaco, Consolas, Courier, monospace;
-    }
-
-    .demo-button {
-      float: right;
-    }
-
-    .source {
-      padding: 24px;
-    }
-
-    .meta {
-      background-color: #fafafa;
-      border-top: solid 1px #eaeefb;
-      overflow: hidden;
-      height: 0;
-      transition: height .2s;
-    }
-
-    .description {
-      padding: 20px;
-      box-sizing: border-box;
-      border: solid 1px #ebebeb;
-      border-radius: 3px;
-      font-size: 14px;
-      line-height: 22px;
-      color: #666;
-      word-break: break-word;
-      margin: 10px;
-      background-color: #fff;
-
-      p {
-        margin: 0;
-        line-height: 26px;
-      }
-
-      code {
-        color: #5e6d82;
-        background-color: #e6effb;
-        margin: 0 4px;
-        display: inline-block;
-        padding: 1px 5px;
-        font-size: 12px;
-        border-radius: 3px;
-        height: 18px;
-        line-height: 18px;
-      }
-    }
-
-    .highlight {
-      pre {
-        margin: 0;
-      }
-
-      code.hljs {
-        margin: 0;
-        border: none;
-        max-height: none;
-        border-radius: 0;
-        line-height: 1.8;
-        color:black;
-        &::before {
-          content: none;
-        }
-      }
-    }
-
-    .demo-block-control {
-      border-top: solid 1px #eaeefb;
-      height: 44px;
-      box-sizing: border-box;
-      background-color: #fff;
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
-      text-align: center;
-      margin-top: -1px;
-      color: #d3dce6;
-      cursor: pointer;
-      position: relative;
-
-      &.is-fixed {
-        position: fixed;
-        bottom: 0;
-        width: 868px;
-      }
-
-      i {
-        font-size: 16px;
-        line-height: 44px;
-        transition: .3s;
-        &.hovering {
-          transform: translateX(-40px);
-        }
-      }
-
-      > span {
-        position: absolute;
-        transform: translateX(-30px);
-        font-size: 14px;
-        line-height: 44px;
-        transition: .3s;
-        display: inline-block;
-      }
-
-      &:hover {
-        color: #409EFF;
-        background-color: #f9fafc;
-      }
-
-      & .text-slide-enter,
-      & .text-slide-leave-active {
-        opacity: 0;
-        transform: translateX(10px);
-      }
-
-      .control-button {
-        line-height: 26px;
-        position: absolute;
-        top: 0;
-        right: 0;
-        font-size: 14px;
-        padding-left: 5px;
-        padding-right: 25px;
-      }
-    }
+  export default ({
+    Vue
+  }) => {
+    Vue.use(ElementUI);
+    Vue.use(zylUI)
   }
-</style>
+  ```
 
-<script type="text/babel">
-  export default {
-    data() {
-      return {
-        hovering: false,
-        isExpanded: false,
-        fixedControl: false,
-        scrollParent: null,
-        langConfig: {
-          "hide-text": "隐藏代码",
-          "show-text": "显示代码",
-          "button-text": "在线运行",
-          "tooltip-text": "前往 jsfiddle.net 运行此示例"
-        }
-      };
-    },
+`styles/palette.styl` 文件用于覆盖 vuepress 的默认样式，`components/demo-block.vue`文件主要是对默认主题Demo展示的样式的重写及展示逻辑的一些定义。代码过长，这里不做赘述。
 
-    props: {
-      jsfiddle: Object,
-      default() {
-        return {};
-      }
-    },
+### 编写对应组件的Markdown文件
 
-    methods: {
-      scrollHandler() {
-        const { top, bottom, left } = this.$refs.meta.getBoundingClientRect();
-        this.fixedControl = bottom > document.documentElement.clientHeight &&
-          top + 44 <= document.documentElement.clientHeight;
-      },
+以button组件为例，在 `docs/components` 下建 `button.md` 文件
 
-      removeScrollHandler() {
-        this.scrollParent && this.scrollParent.removeEventListener('scroll', this.scrollHandler);
-      }
-    },
-
-    computed: {
-      lang() {
-        return this.$route.path.split('/')[1];
-      },
-
-      blockClass() {
-        return `demo-${ this.lang } demo-${ this.$router.currentRoute.path.split('/').pop() }`;
-      },
-
-      iconClass() {
-        return this.isExpanded ? 'el-icon-caret-top' : 'el-icon-caret-bottom';
-      },
-
-      controlText() {
-        return this.isExpanded ? this.langConfig['hide-text'] : this.langConfig['show-text'];
-      },
-
-      codeArea() {
-        return this.$el.getElementsByClassName('meta')[0];
-      },
-
-      codeAreaHeight() {
-          
-        if (this.$el.getElementsByClassName('description').length > 0) {
-         return this.$el.getElementsByClassName('description')[0].clientHeight +
-            this.$el.getElementsByClassName('highlight')[0].clientHeight + 20;
-        }
-        return this.$el.getElementsByClassName('highlight')[0].clientHeight;
-      }
-    },
-
-    watch: {
-      isExpanded(val) {
-        this.codeArea.style.height = val ? `${ this.codeAreaHeight + 1 }px` : '0';
-        if (!val) {
-          this.fixedControl = false;
-          this.$refs.control.style.left = '0';
-          this.removeScrollHandler();
-          return;
-        }
-        setTimeout(() => {
-          this.scrollParent = document.querySelector('.page-component__scroll > .el-scrollbar__wrap');
-          this.scrollParent && this.scrollParent.addEventListener('scroll', this.scrollHandler);
-          this.scrollHandler();
-        }, 200);
-      }
-    },
-
-    mounted() {
-      this.$nextTick(() => {
-        let highlight = this.$el.getElementsByClassName('highlight')[0];
-        if (this.$el.getElementsByClassName('description').length === 0) {
-          highlight.style.width = '100%';
-          highlight.borderRight = 'none';
-        }
-      });
-    },
-
-    beforeDestroy() {
-      this.removeScrollHandler();
-    }
-  };
-</script>
-```
-
-#### (8).编写对应组件的`md`文件
-
-```md
-
-# Button组件
-常用的操作按钮。
+```markdown
+# Button 按钮
+常用的操作按钮
 ## 基础用法
-基础的按钮用法。
+基础的按钮用法
 
 <demo-block>
-::: slot source
+:::slot source
 <button-test1></button-test1>
 :::
 
-使用type属性来定义 Button 的样式。
+使用type属性来定义 Button 的样式
 
-::: slot highlight
-​```html
+:::slot highlight
+(```html)
 <div>
-    <zyl-button>默认按钮</zh-button>
-    <zyl-button type="primary">主要按钮</zyl-button>
-    <zyl-button type="success">成功按钮</zyl-button>
-    <zyl-button type="info">信息按钮</zyl-button>
-    <zyl-button type="warning">警告按钮</zyl-button>
-    <zyl-button type="danger">危险按钮</zyl-button>
+  <zh-button>默认按钮</zh-button>
+  <zh-button type="primary">主要按钮</zh-button>
+  <zh-button type="success">成功按钮</zh-button>
+  <zh-button type="info">信息按钮</zh-button>
+  <zh-button type="warning">警告按钮</zh-button>
+  <zh-button type="danger">危险按钮</zh-button>
 </div>
-​```
+(```)
 :::
 </demo-block>
-```
 
-## 九.发布到`npm`
-
-配置`.npmignore`配置文件
+// 略
 
 ```
-npm addUser // 如果没有用户名就注册一个
-npm login // 登录，输入密码
-npm publish // 发布
+
+访问 http://localhost:1234 即可看到文档了。当然，可以将文档部署到自己的服务器，也可以部署到 `Github pages` 上，这里不做展开。
+
+## 发布组件到 npm
+
+- 配置 `.npmignore` 文件
+
+```javascript
+src
+public
+tests
 ```
 
-## 十.推送到git
+- 发布
 
-添加`npm`图标 https://badge.fury.io/for/js 
+发布前，需要确保 `package.json` 中这些字段。
+
+1. name
+
+它是发布到 npm 上的包名，也是安装时的包名。请保证它的唯一性，可以到npm上先搜索一下，是否已经存在。
+
+2. version
+
+版本号，遵守语义化版本规则。每次新发布都要进行更改。可以使用 `npm version [major.minor.patch]` 命令来执行更新。
+
+3. main
+
+是包的入口。
+
 
 ```bash
-git remote add origin 
-git push origin master
+npm addUser # 如果没有用户名就注册一个，否则直接登录
+npm login # 登录，输入密码
+npm publish # 发布，zyl-ui根目录下执行
 ```
+
+等过一会儿，就可以到 [npm](https://www.npmjs.com/) 上搜索你发布的包。接下来你就可以 `npm install zyl-ui` 安装并使用你自己的组件库了。
+
+## 结语
+
+本文主要简要介绍了基于Vue的UI组件库搭建及基于VuePress搭建文档的过程。涉及到项目的组织方式、组件的开发流程、单元测试、打包、文档、发布等方面。
