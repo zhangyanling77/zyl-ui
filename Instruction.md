@@ -126,12 +126,12 @@ Vue.use(zylUI)
 
 API设计
 
-参数|说明|类型|可选值|默认值
-:-|:-|:-|:-|:-|:-
-type|类型| string |primary / success / warning / danger / info | default
-icon|图标类名| string | - | -
-loading|是否加载中状态| boolean | - | false
-position|图标位置| string | left / right | left
+|参数|说明|类型|可选值|默认值|
+|-|-|-|-|-|-|
+|type|类型| string |primary / success / warning / danger / info | default |
+|icon|图标类名| string | - | - |
+|loading|是否加载中状态| boolean | - | false |
+|position|图标位置| string | left / right | left |
 
 全局样式
 
