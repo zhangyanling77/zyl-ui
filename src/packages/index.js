@@ -1,3 +1,4 @@
+import Vue from 'vue';
 // 所有组件的入口
 import Button from './button/button.vue';
 import Icon from './icon/icon.vue';
@@ -55,8 +56,14 @@ const install = Vue => {
  * 有可能组件会通过script标签引入
  * <script src='zyl-ui'></script>
  */
-if (typeof Window.Vue !== 'undefined') {
-  install(Vue) // 全局直接通过script 引用的方式会默认调用install方法
+// if (typeof Window.Vue !== 'undefined') {
+//   install(Vue) // 全局直接通过script 引用的方式会默认调用install方法
+// }
+// 非SSR时才会存在window对象
+if (!Vue.prototype.$isServer) {
+  if (typeof Window.Vue !== 'undefined') {
+    install(Vue) // 全局直接通过script 引用的方式会默认调用install方法
+  }
 }
 
 export default {
