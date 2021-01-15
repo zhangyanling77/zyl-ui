@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import '@/styles/icon';
+// import '@/styles/icon';
 export default {
   name: 'zyl-icon',
   props: {
@@ -13,7 +13,10 @@ export default {
       type: String,
       required: true
     }
-  }
+  },
+  mounted() {
+    require('@/styles/icon');
+  },
 }
 </script>
 
